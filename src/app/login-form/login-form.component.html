@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="form_bg">
+
+      <div class="row">
+
+        <div class="col-md-6 col-xs-6">
+          <form action="{{apiSignIn.facebook}}" method="post" ngNoForm>
+            <input type="hidden" name="scope" value="email,public_profile" />
+            <div class="form-group">
+              <button type="submit" class="btn btn-default btn-sm" id="fb-login">Facebook login</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-6 col-xs-6">
+          <form action="{{apiSignIn.twitter}}" method="post" ngNoForm>
+            <input type="hidden" name="include_email" value="true" />
+            <div class="form-group">
+              <button type="submit" class="btn btn-default btn-sm" id="twitter-login">Twitter login</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-6 col-xs-6">
+          <form action="{{apiSignIn.linkedin}}" method="post" ngNoForm>
+            <div class="form-group">
+              <button type="submit" class="btn btn-default btn-sm" id="linkedin-login">Linkedin login</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-6 col-xs-6">
+          <form action="{{apiSignIn.google}}" method="post" ngNoForm>
+            <input type="hidden" name="scope" value="email" />
+            <div class="form-group">
+              <button type="submit" class="btn btn-default btn-sm" id="google-login">Google login</button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+      <div class="row" *ngIf="loginErrorMessage != null">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <strong>Error!</strong> {{loginErrorMessage}}
+              </div>
+        </div>
+      </div>
+
+      <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+        <h2 class="text-center">Login Page</h2>
+        <br/>
+        <div class="form-group">
+          <input [(ngModel)]="user.username" type="text" class="form-control" name="username" id="username" placeholder="User id" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="user.password" type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+        </div>
+        <br/>
+        <div class="align-center">
+          <button type="submit" class="btn btn-default" id="login">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

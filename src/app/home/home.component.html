@@ -1,0 +1,27 @@
+<div class="container">
+
+  <div class="col-md-12 mb-4">
+    <p class="col-md-6 col-xs-6">Home Page</p>
+    <button class="btn btn-primary btn-sm pull-right" (click)="logout()">LOG OUT</button>
+  </div>
+  <table class="table">
+    <tr>
+      <td>User Id</td>
+      <td>{{user.userName}}</td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>{{user.name}}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{user.email}}</td>
+    </tr>
+    <tr>
+      <td>User Role</td>
+      <td>{{toStr(user.role)}}</td>
+    </tr>
+  </table>
+
+
+</div>
