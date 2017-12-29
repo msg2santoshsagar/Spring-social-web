@@ -40,7 +40,7 @@ export class LoginFormComponent implements OnInit {
 
     this.http.post(url, null, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-      , withCredentials: true
+     , withCredentials: true
     }).subscribe(
       data => {
         console.log("You are already loggedin, redirecting to home page!!");

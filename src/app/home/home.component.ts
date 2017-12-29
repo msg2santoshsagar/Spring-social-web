@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -12,52 +12,52 @@ export class HomeComponent implements OnInit {
 
   user = {};
 
-  constructor(private http : HttpClient, private router : Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    let url  = environment.apiAuth;
-    
-        console.log("AUTH URL :: ",url);
-    
-        this.http.post(url,null,{
-          headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-          ,withCredentials:true
-        }).subscribe(
-          data=>{
-            console.log("User is authorized");
-            this.user =  data;
-          },
-          err=>{
-            console.error("Error Occured while loading auth data :: ",err.error);
-            this.router.navigate(["/"]);
-          }
-        )
+    let url = environment.apiAuth;
+
+    console.log("AUTH URL :: ", url);
+
+    this.http.post(url, null, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      , withCredentials: true
+    }).subscribe(
+      data => {
+        console.log("User is authorized");
+        this.user = data;
+      },
+      err => {
+        console.error("Error Occured while loading auth data :: ", err.error);
+        this.router.navigate(["/"]);
+      }
+      )
   }
 
-  toStr(data){
-    if(data === undefined){
+  toStr(data) {
+    if (data === undefined) {
       return "";
     }
     return data.map(a => a.name).join(", ");
   }
 
-  logout(){
+  logout() {
     console.log("Request to logout");
-    let url  = environment.apiLogOut;
-    this.http.post(url,null,{
-      headers: new HttpHeaders({ 'Content-Type': 'application/json'})
-      ,withCredentials:true
+    let url = environment.apiLogOut;
+    this.http.post(url, null, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      , withCredentials: true
     }).subscribe(
-      data=>{
+      data => {
         console.log("User is loggedout.");
-        this.user =  {};
+        this.user = {};
         this.router.navigate(["/"]);
       },
-      err=>{
-        console.error("Error Occured while logging out :: ",err.error);
+      err => {
+        console.error("Error Occured while logging out :: ", err.error);
         this.router.navigate(["/"]);
       }
-    )
+      )
   }
 
 }
