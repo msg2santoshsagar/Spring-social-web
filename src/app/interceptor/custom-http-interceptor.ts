@@ -15,12 +15,10 @@ export class CustomHttpInterceptor implements HttpInterceptor {
     /**
      * Custom Http Interceptor
      * 
-     * To put Http credential to true and verify user authentication
      * 
      */
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("Custom Http Interceptor called");
         return next.handle(request).do(
             (event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
@@ -31,8 +29,14 @@ export class CustomHttpInterceptor implements HttpInterceptor {
             (err: any) => {
                 if( err instanceof HttpErrorResponse){
                     if (err.status === 401) {
-                       //UnAuthorized Error ocucred
-                       console.error("User is unauthorized ",err);
+                       const currentUrl = this.router.url;
+                       if( this.router.url === '/'){
+                            console.info("User is already at login page.");
+                       }else{
+                            console.info("User is not at login page, routing to login page.");
+                            this.router.navigate(["/"]);
+                       }
+                       
                       }
                 }
             }

@@ -1,4 +1,4 @@
-const restEndPoint = "http://spring-socialapp.vrqb9j7jng.us-east-1.elasticbeanstalk.com";
+const restEndPoint = ""; // "http://spring-socialapp.vrqb9j7jng.us-east-1.elasticbeanstalk.com";
 
 export const environment = {
   production: true,

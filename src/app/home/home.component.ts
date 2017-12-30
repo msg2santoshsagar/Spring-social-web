@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
       },
       err => {
         console.error("Error Occured while loading auth data :: ", err.error);
-        this.router.navigate(["/"]);
       }
       )
   }
