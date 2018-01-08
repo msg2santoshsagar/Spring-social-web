@@ -6,11 +6,12 @@ import { Observable } from "rxjs/Observable";
 import { HttpResponse } from "@angular/common/http";
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthDataService } from '../service/auth-data.service';
 
 @Injectable()
 export class CustomHttpInterceptor implements HttpInterceptor {
 
-    constructor(private router : Router){}
+    constructor(private router: Router, private authDataService: AuthDataService) { }
 
     /**
      * Custom Http Interceptor
@@ -23,25 +24,26 @@ export class CustomHttpInterceptor implements HttpInterceptor {
             (event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
                     // TODO : If you can see response
-                   // console.log("You got response", event);
+                    // console.log("You got response", event);
                 }
             },
             (err: any) => {
-                if( err instanceof HttpErrorResponse){
+                if (err instanceof HttpErrorResponse) {
                     if (err.status === 401) {
-                       const currentUrl = this.router.url;
-                       if( this.router.url === '/'){
-                            console.info("User is already at login page.");
-                       }else{
-                            console.info("User is not at login page, routing to login page.");
-                            this.router.navigate(["/"]);
-                       }
-                       
-                      }
+                        this.authDataService.clearAuthentication(); // Clear authentication
+                        const currentUrl = this.router.url;
+                        console.log("route ", this.router);
+                        if (currentUrl === '/' || currentUrl === 'accessDenied' || currentUrl === 'pageNotFound') {
+                            console.info("User is at allowed unauthorized page.");
+                        } else {
+                            console.info("User is at unauthorized page, routing to login page.");
+                            //     this.router.navigate(["/"]);
+                        }
+
+                    }
                 }
             }
         );
     }
-
 
 }

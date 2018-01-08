@@ -11,14 +11,22 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptor } from './interceptor/custom-http-interceptor'
 
-import { homeRoute } from './home/home.router'
-import { loginFormRoute } from './login-form/login-form.router';
-import { pageNotFoundRoute } from './page-not-found/page-not-found.router';
+import { homeRoute } from './home/home.route'
+import { loginFormRoute } from './login-form/login-form.route';
+import { pageNotFoundRoute, otherPathMatcher } from './page-not-found/page-not-found.route';
+import { AlwaysAuthenticatedGuard } from './guard/always-authenticated.guard';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { accessDeniedRoute } from './access-denied/access-denied.route';
+import { AuthService } from './service/auth.service';
+import { AuthDataService } from './service/auth-data.service';
+import { NotAuthenticatedGuard } from './guard/not-authenticated.guard';
 
 const routes: Routes = [
   homeRoute,
   loginFormRoute,
-  pageNotFoundRoute 
+  accessDeniedRoute,
+  otherPathMatcher,
+  pageNotFoundRoute
 ]
 
 @NgModule({
@@ -26,7 +34,8 @@ const routes: Routes = [
     AppComponent,
     LoginFormComponent,
     HomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
@@ -34,11 +43,17 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: CustomHttpInterceptor,
-    multi: true
-  }],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHttpInterceptor,
+      multi: true
+    },
+    AlwaysAuthenticatedGuard,
+    NotAuthenticatedGuard,
+    AuthService,
+    AuthDataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
+import { AuthDataService } from '../service/auth-data.service';
 
 @Component({
   selector: 'app-home',
@@ -10,27 +12,12 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  user = {};
+  user = this.authDataService.getAuthData();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private authDataService : AuthDataService, private authService : AuthService) { }
 
   ngOnInit() {
-    let url = environment.apiAuth;
-
-    console.log("AUTH URL :: ", url);
-
-    this.http.post(url, null, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-      , withCredentials: true
-    }).subscribe(
-      data => {
-        console.log("User is authorized");
-        this.user = data;
-      },
-      err => {
-        console.error("Error Occured while loading auth data :: ", err.error);
-      }
-      )
+    
   }
 
   toStr(data) {
@@ -42,21 +29,7 @@ export class HomeComponent implements OnInit {
 
   logout() {
     console.log("Request to logout");
-    let url = environment.apiLogOut;
-    this.http.post(url, null, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-      , withCredentials: true
-    }).subscribe(
-      data => {
-        console.log("User is loggedout.");
-        this.user = {};
-        this.router.navigate(["/"]);
-      },
-      err => {
-        console.error("Error Occured while logging out :: ", err.error);
-        this.router.navigate(["/"]);
-      }
-      )
+    this.authService.logout();
   }
 
 }

@@ -3,6 +3,8 @@ import { NgForm, NgModel } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
+import { AuthDataService } from '../service/auth-data.service';
 
 @Component({
   selector: 'app-login-form',
@@ -25,7 +27,8 @@ export class LoginFormComponent implements OnInit {
 
   loginErrorMessage = null;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService
+    , private authDataService: AuthDataService) { }
 
   ngOnInit() {
 
@@ -33,23 +36,6 @@ export class LoginFormComponent implements OnInit {
       this.user.username = "admin";
       this.user.password = "admin"
     }
-
-    let url = environment.apiAuth;
-
-    console.log("AUTH URL :: ", url);
-
-    this.http.post(url, null, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-     , withCredentials: true
-    }).subscribe(
-      data => {
-        console.log("You are already loggedin, redirecting to home page!!");
-        this.router.navigate(["/home"]);
-      },
-      err => {
-        console.error("Error Occured while loading auth data :: ", err.error);
-      }
-      )
 
   }
 
@@ -60,24 +46,15 @@ export class LoginFormComponent implements OnInit {
     console.log(loginForm.value);
     console.log("USER OBJECT ", this.user);
 
-    let body = "username=" + this.user.username + "&password=" + this.user.password;
-    let url = environment.apiLogin;
-
-    console.log("URL ", url);
-
-    this.http.post(url, body, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
-      , withCredentials: true
-    }).subscribe(
+    this.authService.login(this.user.username, this.user.password).subscribe(
       data => {
-        console.log(data);
+        console.log("Login Success Full :: ", data);
         this.router.navigate(["/home"]);
       },
       err => {
-        console.error(err.error);
+        console.error("Error Occured while loggin in :: ", err.error);
         this.loginErrorMessage = err.error.message;
-      }
-      )
+      });
 
   }
 
